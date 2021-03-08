@@ -6,7 +6,7 @@ if ! [[ -d .venv ]]; then
     pip install -r requirements.txt
 fi
 
-docker run -d -p 6379:6379 redis:alpine
+CONTAINER_ID="$(docker run -d -p 6379:6379 redis:alpine)"
 
 source .venv/bin/activate
 watchmedo auto-restart \
@@ -17,3 +17,5 @@ watchmedo auto-restart \
         worker \
         -B \
         -l DEBUG
+
+docker stop "$CONTAINER_ID" >/dev/null
